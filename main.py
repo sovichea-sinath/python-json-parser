@@ -1,0 +1,113 @@
+'''
+constants variable:
+'''
+JSON_WHITESPACE = [' ', '\t', '\n']
+JSON_SYNTAX = ['[', ']', '{', '}', ':', ',']
+JSON_QUOTE = '"'
+JSON_DECIMAL_NUMBER = '0123456789'
+JSON_DECIMAL_POINT = '.'
+
+
+'''
+WHAT IT WILL DO:
+  - check the the first char if it is a quote.
+  if not return None and the original string.
+  - if found the quote, push every other char to a string untill found the
+  ending quote.
+  - if the ending quote is not found and EOF hit, return error?
+'''
+def lex_string(string: str):
+  json_string = ''
+
+  if string[0] != JSON_QUOTE:
+    return None, string
+
+  string = string[1:]
+
+  for c in string:
+    if c == JSON_QUOTE:
+      return json_string, string[len(json_string)+1:]
+    json_string += c
+  
+  raise EOFError(f'Missing ending { JSON_QUOTE } character')
+
+
+'''
+WHAT IT WILL DO:
+  - check the string until we cannot constuct a number no more.
+'''
+def lex_number(string: str):
+  if string[0] not in JSON_DECIMAL_NUMBER:
+    return None, string
+
+  json_number = ''
+  is_decimal_point_exist = False
+
+  for c in string:
+    if c in JSON_DECIMAL_NUMBER:
+      json_number += c
+      continue
+    
+    if c == JSON_DECIMAL_POINT and not is_decimal_point_exist:
+      json_number += c
+      is_decimal_point_exist = True
+      continue
+    elif c == JSON_DECIMAL_POINT and is_decimal_point_exist:
+      raise SyntaxError('Decimal point "." already exist')
+
+    break
+
+  rest = string[len(json_number):]
+  return (float(json_number), rest) if is_decimal_point_exist == True else (int(json_number), rest)
+
+'''
+'''
+def lex_bool(string: str):
+  return None, string
+
+
+def lex_null(string: str):
+  return None, string
+
+def lex(string: str):
+  tokens: list[str] = []
+
+  # loop until the string is ''. whe pop left 1 char per iteration.
+  while len(string):
+    json_string, string = lex_string(string)
+    if json_string is not None:
+      tokens.append(json_string)
+      continue
+
+    json_bool, string = lex_bool(string)
+    if json_bool is not None:
+      tokens.append(json_bool)
+      continue
+
+    json_number, string = lex_number(string)
+    if json_number is not None:
+      tokens.append(json_number)
+      continue
+
+    json_null, string = lex_null(string)
+    if json_null is not None:
+      tokens.append(json_null)
+      continue
+
+    # skip any kind of white space.
+    if string[0] in JSON_WHITESPACE:
+      string = string[1:]
+    elif string[0] in JSON_SYNTAX:
+      tokens.append(string[0])
+      string = string[1:]
+    else:
+      raise SyntaxError(f'Unexpected character: {string[0]}')
+  
+  return tokens
+
+def main():
+  assert lex('{"foo": [1, 2, {"bar": 2}]}')== ['{', 'foo', ':', '[', 1, ',', 2, ',', '{', 'bar', ':', 2, '}', ']', '}']
+
+if __name__ == "__main__":
+  # main()
+  print(lex_number('.44987'))
