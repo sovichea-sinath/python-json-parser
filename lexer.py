@@ -92,7 +92,7 @@ def lex(string: str):
 
     json_number, string = lex_number(string)
     if json_number is not None:
-      tokens.append(json_number)
+      tokens.append(None)
       continue
 
     json_null, string = lex_null(string)
