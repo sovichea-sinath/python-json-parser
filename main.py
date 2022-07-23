@@ -6,6 +6,10 @@ JSON_SYNTAX = ['[', ']', '{', '}', ':', ',']
 JSON_QUOTE = '"'
 JSON_DECIMAL_NUMBER = '0123456789'
 JSON_DECIMAL_POINT = '.'
+JSON_TRUE = 'true'
+JSON_FALSE = 'false'
+JSON_BOOLEAN = [JSON_TRUE, JSON_FALSE]
+JSON_NULL = 'null'
 
 
 '''
@@ -61,12 +65,27 @@ def lex_number(string: str):
   return (float(json_number), rest) if is_decimal_point_exist == True else (int(json_number), rest)
 
 '''
+HOW IT WORK: just match the string.
 '''
 def lex_bool(string: str):
+  true_len = len(JSON_TRUE)
+  false_len = len(JSON_FALSE)
+
+  if len(string) >=true_len and string[:true_len] == JSON_TRUE:
+    return True, string[true_len:]
+  elif len(string) >=false_len and string[:false_len] == JSON_FALSE:
+    return False, string[false_len:]
+
   return None, string
 
-
+'''
+HOW IT WORK: just match the string.
+'''
 def lex_null(string: str):
+  null_len = len(JSON_NULL)
+  if len(string) >= null_len and string[:null_len] == JSON_NULL:
+    return True, string[null_len]
+
   return None, string
 
 def lex(string: str):
@@ -110,4 +129,4 @@ def main():
 
 if __name__ == "__main__":
   # main()
-  print(lex_number('.44987'))
+  print(lex_bool('falsesdsdsdsd,'))
