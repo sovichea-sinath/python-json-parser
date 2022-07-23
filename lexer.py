@@ -112,4 +112,4 @@ def lex(string: str):
   return tokens
 
 if __name__ == '__main__':
-  pass
+  print(lex_bool('true,'))
