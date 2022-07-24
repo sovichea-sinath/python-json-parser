@@ -1,4 +1,13 @@
-from constants import *
+from constants import (
+  JSON_QUOTE,
+  JSON_DECIMAL_NUMBER,
+  JSON_DECIMAL_POINT,
+  JSON_TRUE,
+  JSON_FALSE,
+  JSON_NULL,
+  JSON_WHITESPACE,
+  JSON_SYNTAX
+)
 '''
 WHAT IT WILL DO:
   - check the the first char if it is a quote.
