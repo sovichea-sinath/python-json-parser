@@ -1,5 +1,6 @@
 import unittest
 from lexer import lex
+from parser import parse
 
 
 class TestStringMethods(unittest.TestCase):
@@ -9,4 +10,6 @@ class TestStringMethods(unittest.TestCase):
 
 
 if __name__ == "__main__":
-  unittest.main()
+  # unittest.main()
+  tokens = lex('[1, 2, 3, 4, "hello"]')
+  print(parse(tokens))
