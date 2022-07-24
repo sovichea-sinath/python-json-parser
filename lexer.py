@@ -80,7 +80,7 @@ HOW IT WORK: just match the string.
 def lex_null(string: str):
   null_len = len(JSON_NULL)
   if len(string) >= null_len and string[:null_len] == JSON_NULL:
-    return True, string[null_len]
+    return True, string[null_len:]
 
   return None, string
 
