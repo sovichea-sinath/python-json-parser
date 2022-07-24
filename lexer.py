@@ -101,12 +101,12 @@ def lex(string: str):
 
     json_number, string = lex_number(string)
     if json_number is not None:
-      tokens.append(None)
+      tokens.append(json_number)
       continue
 
     json_null, string = lex_null(string)
     if json_null is not None:
-      tokens.append(json_null)
+      tokens.append(None)
       continue
 
     # skip any kind of white space.
