@@ -11,5 +11,5 @@ class TestStringMethods(unittest.TestCase):
 
 if __name__ == "__main__":
   # unittest.main()
-  tokens = lex('[1, 2, 3, 4, "hello"]')
+  tokens = lex('{ "key": "value", "age": [56, 12, 0.88], "name": "sovichea", "lover": null }')
   print(parse(tokens))
